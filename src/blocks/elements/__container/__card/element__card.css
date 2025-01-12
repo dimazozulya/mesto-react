@@ -1,0 +1,6 @@
+.element__card{
+    max-height: 361px;
+    margin: 0 15px;
+    max-width: 282px;
+    position: relative;
+}

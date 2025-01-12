@@ -1,0 +1,32 @@
+.element__like_container{
+    margin-right: 10px;
+}
+.element__like-svg{
+    width: 32px;
+    height: 30px;
+    cursor: pointer;
+    justify-items: center;
+    /* margin-left: auto;
+    margin-right: 30px; */
+    fill: none;
+    transition: fill 0.3s ease;
+}
+.element__like-svg:hover {
+    fill: #636060;
+}
+
+
+
+.element__like-svg-active{
+    width: 32px;
+    height: 30px;
+    cursor: pointer;
+    justify-items: center;
+    /* margin-left: auto; */
+    fill:black;
+}
+.element__like_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

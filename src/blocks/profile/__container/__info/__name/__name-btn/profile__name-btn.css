@@ -1,0 +1,11 @@
+.profile__name-btn{
+    margin-left: 20px;
+    margin-top: 5px;
+    padding: 5px 10px;
+    border: 2px #fff solid;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+.profile__name-btn:hover{
+    opacity: 0.5;
+}

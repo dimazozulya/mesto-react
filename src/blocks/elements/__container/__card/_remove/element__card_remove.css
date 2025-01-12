@@ -1,0 +1,19 @@
+.element__card_remove{
+    width: 19px;
+    height: 19px;
+    position: absolute;
+    top: 5% ;
+    right: 7%;
+    cursor: pointer;
+    display: none;
+}
+
+.element__card_remove_styles:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+.element__delete-button_visible{
+    display: block;
+}

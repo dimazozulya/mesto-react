@@ -1,0 +1,15 @@
+.profile__container{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 150px auto auto;
+    column-gap: 15px;
+}
+
+@media(max-width: 750px){
+    .profile__container{
+        grid-auto-flow: row;
+        grid-template-columns: 1fr;
+        place-items: center;
+    }
+    
+}

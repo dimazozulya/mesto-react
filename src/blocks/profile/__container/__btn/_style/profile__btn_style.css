@@ -1,0 +1,15 @@
+.profile__btn_style{
+    background-color: transparent;
+    color: #fff;
+    font-size: 40px;
+    border: 2px #fff solid;
+    padding: 0 75px 5px;
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+.profile__btn_style:hover{
+    color: #545454 ;
+    border: 2px #545454 solid;
+}

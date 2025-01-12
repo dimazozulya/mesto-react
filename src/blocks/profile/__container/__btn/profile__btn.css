@@ -1,0 +1,11 @@
+.profile__btn{
+    padding-top: 35px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+@media (max-width:750px){
+    .profile__btn{
+        margin: 0 auto;
+    }
+}

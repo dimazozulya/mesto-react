@@ -1,0 +1,53 @@
+@import url(./vendor/normalize.css);
+@import url(./blocks/root/root.css);
+
+@import url(./blocks/header/header.css);
+@import url(./blocks/header/__logo/header__logo.css);
+@import url(./blocks/profile/profile.css);
+@import url(./blocks/profile/__container/profile__container.css);
+@import url(./blocks/profile/__container/__img/profile__img.css);
+@import url(./blocks/profile/__container/__info/profile__info.css);
+@import url(./blocks/profile/__container/__info/__name/profile__name.css);
+@import url(./blocks/profile/__container/__info/__name/__name-btn/profile__name-btn.css);
+@import url(./blocks/profile/__container/__info/__name/__name-text/profile__name-text.css);
+@import url(./blocks/profile/__container/__info/__subtitle/profile__subtitle.css);
+@import url(./blocks/profile/__container/__btn/profile__btn.css);
+@import url(./blocks/profile/__container/__btn/_style/profile__btn_style.css);
+@import url(./blocks/popup/popup.css);
+@import url(./blocks/popup/_active/popup_active.css);
+@import url(./blocks/popup/__container/popup__container.css);
+@import url(./blocks/popup/__container/__close-btn/close-btn.css);
+@import url(./blocks/popup/__container/__title/popup__title.css);
+@import url(./blocks/popup/__container/__input/popup__input.css);
+@import url(./blocks/popup/__container/__input/__input-name/popup__input-name.css);
+@import url(./blocks/popup/__container/__input/__input-job/popup__input-job.css);
+@import url(./blocks/popup/__container/__submit-button/popup__submit-button.css);
+@import url(./blocks/elements/elements.css);
+@import url(./blocks/elements/__container/elements__container.css);
+@import url(./blocks/elements/__container/__card/element__card.css);
+@import url(./blocks/elements/__container/__card/__image/element__image_style.css);
+@import url(./blocks/elements/__container/__card/__container/element__container.css);
+@import url(./blocks/elements/__container/__card/__container/__title/element__title.css);
+@import url(./blocks/elements/__container/__card/__container/__like-svg/element__like-svg.css);
+@import url(./blocks/footer/footer.css);
+@import url(./blocks/footer/__container/__container-author/footer__container-author.css);
+@import url(./blocks/elements/__container/__card/_remove/element__card_remove.css);
+@import url(./blocks/elements/__container/__card/__container/__title/_card/element__title_card.css);
+@import url(./blocks/elements/popup__element/popup__element.css);
+
+
+/* Ховер-эффект для кнопки удаления (мусорка) */
+.element__card_remove_styles:hover {
+    cursor: pointer;
+    transform: scale(1.2); /* Увеличение при наведении */
+    transition: transform 0.3s ease, fill 0.3s ease;
+}
+
+/* Ховер-эффект для кнопки закрытия попапа */
+.popup__element-close img:hover {
+    transform: rotate(90deg); /* Поворот на 90 градусов */
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+

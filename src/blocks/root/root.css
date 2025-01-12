@@ -1,0 +1,22 @@
+    @font-face {
+        font-family: InterVariable;
+        font-style: normal;
+        font-weight: 100 900;
+        font-display: swap;
+        src: url("../../fonts/Inter-4.0/InterVariable.ttf") format("truetype");
+      }
+    html{
+        background-color: #000000;
+    }
+    h1,h2{
+        margin: 0;
+        padding: 0;
+    }
+    .root{
+        font-family: InterVariable;
+        color: #fff;
+        max-width: 880px;
+        margin: 0 auto;
+        padding: 0 25px;
+
+    }
