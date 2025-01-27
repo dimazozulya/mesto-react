@@ -5,6 +5,13 @@
         font-display: swap;
         src: url("../../fonts/Inter-4.0/InterVariable.ttf") format("truetype");
       }
+    
+      button{
+        background: none;
+    border: none; 
+    padding: 0; 
+      }
+    
     html{
         background-color: #000000;
     }

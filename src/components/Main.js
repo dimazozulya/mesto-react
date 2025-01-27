@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
+import { useContext } from 'react';
 import EditBtn from '../images/Vector-pencil.svg';
 import Card from './Card';
 import PopupWithImage from './PopupWithImage';
+import CurrentUserContext from '../contexts/currentUserContext';
 
-function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, userInfo, avatar, onCardDelete }) {
+
+
+function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardDelete, onCardLike}) {
+
+  const currentUser = useContext(CurrentUserContext);
   
   const [selectedCard, setSelectedCard] = useState(null);
-  const handleCardClick = (card) => {
+  const handleCardClick  = (card) => {
     setSelectedCard(card);
   }
   const closeImagePopup = () => {
@@ -19,7 +25,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, userInfo, avatar
         <div className="profile__container">
           <div className="image-container" onClick={onEditAvatar}>
             <img
-              src={avatar}
+              src={currentUser?.avatar}
               alt="Изображение Вашего профиля"
               className="profile__img"
             />
@@ -41,7 +47,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, userInfo, avatar
           </div>
           <div className="profile__info">
             <div className="profile__name">
-              <h1 className="profile__name-text">{userInfo ? userInfo.name : ''}</h1>
+              <h1 className="profile__name-text">{currentUser ? currentUser?.name : ''}</h1>
               <div className="profile__name-btn" onClick={onEditProfile}>
                 <img
                   src={EditBtn}
@@ -51,7 +57,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, userInfo, avatar
                 />
               </div>
             </div>
-            <h2 className="profile__subtitle">{userInfo && userInfo.company ? userInfo.company.name : ''}</h2>
+            <h2 className="profile__subtitle">{currentUser && currentUser?.company ? currentUser?.company.name : ''}</h2>
           </div>
           <div className="profile__btn">
             <button className="profile__btn_style" onClick={onAddPlace}>
@@ -66,10 +72,8 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, userInfo, avatar
           {cards.map((card) => (
             <Card 
               key={card.id}
-              title={card.title}
-              imageSrc={card.image}
-              likes={card.likes}
-              onLike={() => console.log('Лайк', card.id)} // Заменить на реальный обработчик
+              card={card}
+              onCardLike={onCardLike} 
               onDelete={() => onCardDelete(card.id)}
               onClick={() => handleCardClick(card)}
             />

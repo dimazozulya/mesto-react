@@ -4,7 +4,9 @@ import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import BaseAvatar from '../images/profile__img.jpg';
-import { getUserInfo, getCards, addCard, updateUserInfo, updateAvatar, deleteCard } from '../utils/Api';
+import { getUserInfo, getCards, addCard, updateUserInfo, updateAvatar, deleteCard, changeLikeCardStatus } from '../utils/Api';
+import CurrentUserContext from '../contexts/currentUserContext';
+
 
 
 function App() {
@@ -15,6 +17,18 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
   const [avatar, setAvatar] = useState(BaseAvatar);
   const [cards, setCards] = useState([]);
+
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    getUserInfo()
+      .then(userInfo => {
+        setCurrentUser(userInfo);
+      })
+      .catch(error => {
+        console.error('Error fetching user info :', error);
+      });
+  }, []);
 
   // Загружаем данные пользователя при монтировании компонента
   useEffect(() => {
@@ -43,7 +57,8 @@ function App() {
             id: card.id,
             title: card.title,
             image: card.image || `https://picsum.photos/600/400?random=${card.id}`,
-            likes: Math.floor(Math.random() * 100), // Случайное число для лайков
+            likes: Array.isArray(card.likes) ? card.likes : [],  
+            owner: card.owner || { _id: 'default-owner-id'},
           }))
         );
       })
@@ -92,12 +107,29 @@ function App() {
   const handleCardDelete = (cardId) => {
     deleteCard(cardId)
       .then(() => {
+        console.log('Удаление карточки')
         setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
       })
       .catch((error) => {
         console.error('Ошибка при удалении карточки:', error);
       });
   };
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some((like) => like._id === currentUser._id);
+  
+    console.log(`Карточка: ${card._id}, лайк ${isLiked ? 'удаляется' : 'ставится'}`);
+  
+    changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c.id === card.id ? { ...c, ...newCard } : c))
+        );
+      })
+      .catch((err) => {
+        console.error('Ошибка при изменении статуса лайка:', err);
+      });
+  }
 
   // Обработчики открытия попапов
   const handleEditProfileClick = () => {
@@ -121,7 +153,8 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="App">
       <div className="root">
         {/* Компонент Header с передачей данных пользователя */}
         {userInfo && (
@@ -139,6 +172,7 @@ function App() {
           userInfo={userInfo}
           avatar={avatar}
           onEditProfile={handleEditProfileClick}
+          onCardLike={handleCardLike}
         />
 
         {/* Компонент Footer */}
@@ -233,6 +267,7 @@ function App() {
        
       </div>
     </div>
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -25,6 +25,7 @@ export function getUserInfo() {
 // Получить список карточек
 export function getCards() {
   return fetch(`${BASE_URL}/posts`).then((res) => {
+    console.log(11);
     if (res.ok) {
       return res.json();
     }
@@ -117,3 +118,36 @@ export function toggleLike(cardId, isLiked) {
     }, 500);
   });
 }
+
+export function changeLikeCardStatus(cardId, isLiked) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ id: cardId, likes: isLiked ? [{userId: 1}] : []});
+    }, 500);
+  });
+}
+
+// export function changeLikeCardStatus(cardId, isLiked) {
+//   const method = isLiked? 'PUT' : 'DELETE';
+//   return fetch(`https://jsonplaceholder.typicode.com/posts/${cardId}`, {
+//     method: method,
+//     headers: {
+//       'Content-Type':'application/json',
+//     },
+//     body: JSON.stringify({liked: isLiked}),  
+//   })
+//     .then((res) => {
+//       if(res.ok){
+//         return res.json();
+//       }
+//       return Promise.reject(`Ошибка: ${res.status}`);
+//     })
+//     .then((data) => {
+//       console.log('Ответ сервера:', data);
+//       return data;
+//     })
+//     .catch((error) => {
+//       console.error (`Ошибка при выполнении запроса: `, error);
+//       throw error;
+//     });
+// }
