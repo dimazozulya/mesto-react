@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 import BaseAvatar from '../images/profile__img.jpg';
 import { getUserInfo, getCards, addCard, updateUserInfo, updateAvatar, deleteCard, changeLikeCardStatus } from '../utils/Api';
 import CurrentUserContext from '../contexts/currentUserContext';
+import EditProfilePopup from './EditProfilePopup';
 
 
 
@@ -66,18 +67,6 @@ function App() {
         console.error('Ошибка при получении карточек:', error);
       });
   }, []);
-
-  // Обновление информации о пользователе
-  const handleUpdateUser = (data) => {
-    updateUserInfo(data)
-      .then((updatedUser) => {
-        setUserInfo(updatedUser);
-        closeAllPopups();
-      })
-      .catch((error) => {
-        console.error('Ошибка при обновлении данных пользователя:', error);
-      });
-  };
 
   // Обновление аватара
   const handleUpdateAvatar = (data) => {
@@ -152,6 +141,21 @@ function App() {
     setIsEditAvatarPopupOpen(false);
   };
 
+  function handleUpdateUser(data) {
+    updateUserInfo(data)
+      .then((updatedUser) => {
+        setCurrentUser({
+          ...currentUser,
+          name: updatedUser.name,
+          company: { ...currentUser?.company, name: data.about }, // Обновляем company.name
+        });
+        closeAllPopups();
+      })
+      .catch((error) => {
+        console.error('Ошибка при обновлении профиля:', error);
+      });
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -178,39 +182,12 @@ function App() {
         {/* Компонент Footer */}
         <Footer />
 
-        {/* Попапы */}
-        <PopupWithForm
-          title="Редактировать профиль"
-          name="edit-profile"
+        <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onSubmit={handleUpdateUser}
-        >
-          <div className="input__wrapper">
-            <input
-              type="text"
-              name="name"
-              className="popup__input popup__input-name"
-              placeholder="Введите имя"
-              required
-              minLength="2"
-              maxLength="40"
-            />
-            <span className="error-message name-error"></span>
-          </div>
-          <div className="input__wrapper">
-            <input
-              type="text"
-              name="job"
-              className="popup__input popup__input-job"
-              placeholder="Введите место работы"
-              required
-              minLength="2"
-              maxLength="200"
-            />
-            <span className="error-message job-error"></span>
-          </div>
-        </PopupWithForm>
+          currentUser={currentUser}
+        />
 
         <PopupWithForm
           title="Новое место"
@@ -249,6 +226,7 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onSubmit={handleUpdateAvatar}
+          onUpdatedUser={handleUpdateUser}
         >
           <div className="input__wrapper">
             <input
