@@ -1,8 +1,11 @@
 import React from 'react';
 import closeIcon from '../images/close-icon.svg';
 
-function PopupWithForm({ title, name, children, isOpen, onClose }) {
-  
+function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit }) {
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Предотвращаем перезагрузку страницы
+    onSubmit(e);
+  };
   return (
     <section className={`popup popup_type_${name} ${isOpen ? 'popup_active' : ''}`}>
       <div className="popup__container">
@@ -14,7 +17,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose }) {
           />
         </button>
         <h2 className="popup__title">{title}</h2>
-        <form name={name} className="popup__form" noValidate>
+        <form name={name} className="popup__form" noValidate onSubmit={handleSubmit}>
           {children} {/* Здесь вставляется содержимое */}
           <button type="submit" className="popup__submit-button">Сохранить</button>
         </form>

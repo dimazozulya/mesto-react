@@ -25,6 +25,7 @@ export function getUserInfo() {
 // Получить список карточек
 export function getCards() {
   return fetch(`${BASE_URL}/posts`).then((res) => {
+    console.log(11);
     if (res.ok) {
       return res.json();
     }
@@ -33,24 +34,34 @@ export function getCards() {
 }
 
 // Добавить новую карточку
-export function addCard(cardData) {
-  return fetch(`${BASE_URL}/posts`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: cardData.name,
-      body: '',
-      userID: 1,
-    }),
-  }).then((res) => {
-    if (res.ok) {
+export function addCard({ title, image }) {
+  return fetch(`https://jsonplaceholder.typicode.com/photos`, { // 👈 Используем /photos
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          title: title,  
+          url: image,  
+          albumId: 1 
+      })
+  })
+  .then(res => {
+      if (!res.ok) {
+          throw new Error(`Ошибка: ${res.status}`);
+      }
       return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+  })
+  .then(data => {
+      console.log("Ответ от jsonplaceholder:", data);
+      return data;
+  })
+  .catch(error => {
+      console.error("Ошибка при добавлении карточки:", error);
   });
 }
+
+
 
 // Обновить данные пользователя
 export function updateUserInfo(data) {
@@ -117,3 +128,36 @@ export function toggleLike(cardId, isLiked) {
     }, 500);
   });
 }
+
+export function changeLikeCardStatus(cardId, isLiked) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({ id: cardId, likes: isLiked ? [{userId: 1}] : []});
+    }, 500);
+  });
+}
+
+// export function changeLikeCardStatus(cardId, isLiked) {
+//   const method = isLiked? 'PUT' : 'DELETE';
+//   return fetch(`https://jsonplaceholder.typicode.com/posts/${cardId}`, {
+//     method: method,
+//     headers: {
+//       'Content-Type':'application/json',
+//     },
+//     body: JSON.stringify({liked: isLiked}),  
+//   })
+//     .then((res) => {
+//       if(res.ok){
+//         return res.json();
+//       }
+//       return Promise.reject(`Ошибка: ${res.status}`);
+//     })
+//     .then((data) => {
+//       console.log('Ответ сервера:', data);
+//       return data;
+//     })
+//     .catch((error) => {
+//       console.error (`Ошибка при выполнении запроса: `, error);
+//       throw error;
+//     });
+// }
