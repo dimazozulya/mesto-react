@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
-import PopupWithForm from './PopupWithForm';
 import BaseAvatar from '../images/profile__img.jpg';
 import { getUserInfo, getCards, addCard, updateUserInfo, updateAvatar, deleteCard, changeLikeCardStatus } from '../utils/Api';
 import CurrentUserContext from '../contexts/currentUserContext';
 import EditProfilePopup from './EditProfilePopup';
-
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 
 function App() {
@@ -69,28 +69,20 @@ function App() {
   }, []);
 
   // Обновление аватара
-  const handleUpdateAvatar = (data) => {
+  function handleUpdateAvatar(data) {
     updateAvatar(data)
-      .then((updatedUser) => {
-        setAvatar(updatedUser);
+      .then ((updatedUser) => {
+        setCurrentUser((prevUser) => ({
+          ...prevUser,
+          avatar: updatedUser.avatar,
+        }));
         closeAllPopups();
       })
       .catch((error) => {
-        console.error('Ошибка при обновлении аватара:', error);
+        console.log('Ошибка при обновление аватара: ', error);
       });
-  };
+  }
 
-  // Добавление новой карточки
-  const handleAddPlace = (newCard) => {
-    addCard(newCard)
-      .then((addedCard) => {
-        setCards([addedCard, ...cards]); // Добавляем новую карточку в начало списка
-        closeAllPopups();
-      })
-      .catch((error) => {
-        console.error('Ошибка при добавлении карточки:', error);
-      });
-  };
 
   // Удаление карточки
   const handleCardDelete = (cardId) => {
@@ -156,6 +148,31 @@ function App() {
       });
   }
 
+  function handleAddPlaceSubmit(newCard){
+    console.log("Данные из формы перед отправкой:", newCard); 
+    addCard(newCard)
+      .then ((addedCard) => {
+        console.log("Новая карточка с сервера:", addedCard);
+        setCards((prevCards) => {
+          const updatedCards = [
+              {
+                  id: addedCard.id, 
+                  title: addedCard.title, 
+                  image: addedCard.url,  
+                  likes: [], 
+                  owner: { _id: currentUser._id }, 
+              },
+              ...prevCards,
+          ];
+          console.log("Обновленный массив карточек:", updatedCards);
+          return updatedCards;
+      });
+    })
+      .catch((error) => {
+        console.error('Ошибка при добавлении карточки: ', error);
+      })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
@@ -189,59 +206,17 @@ function App() {
           currentUser={currentUser}
         />
 
-        <PopupWithForm
-          title="Новое место"
-          name="add-place"
-          isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleAddPlace}
-        >
-          <div className="input__wrapper">
-            <input
-              type="text"
-              name="place"
-              className="popup__input popup__input-name"
-              placeholder="Название"
-              required
-              minLength="2"
-              maxLength="30"
-            />
-            <span className="error-message place-error"></span>
-          </div>
-          <div className="input__wrapper">
-            <input
-              type="url"
-              name="link"
-              className="popup__input popup__input-link"
-              placeholder="Ссылка на картинку"
-              required
-            />
-            <span className="error-message link-error"></span>
-          </div>
-        </PopupWithForm>
-
-        <PopupWithForm
-          title="Обновить аватар"
-          name="edit-avatar"
+        <EditAvatarPopup 
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-          onSubmit={handleUpdateAvatar}
-          onUpdatedUser={handleUpdateUser}
-        >
-          <div className="input__wrapper">
-            <input
-              type="url"
-              name="avatar"
-              className="popup__input popup__input-avatar"
-              placeholder="Ссылка на аватар"
-              value={userInfo ? userInfo.avatar : ''} 
-              required
-            />
-            <span className="error-message avatar-error"></span>
-          </div>
-        </PopupWithForm>
+          onUpdateAvatar={handleUpdateAvatar}
+        />
 
-        {/* Компонент ImagePopup */}
+        <AddPlacePopup 
+            isOpen={isAddPlacePopupOpen}
+            onClose={closeAllPopups}
+            onAddPlace={handleAddPlaceSubmit}
+        />
        
       </div>
     </div>

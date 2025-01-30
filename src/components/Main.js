@@ -6,7 +6,6 @@ import PopupWithImage from './PopupWithImage';
 import CurrentUserContext from '../contexts/currentUserContext';
 
 
-
 function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardDelete, onCardLike}) {
 
   const currentUser = useContext(CurrentUserContext);
@@ -25,7 +24,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardDelete, on
         <div className="profile__container">
           <div className="image-container" onClick={onEditAvatar}>
             <img
-              src={currentUser?.avatar}
+              src={currentUser?.avatar || 'https://picsum.photos/600/400?random=${card.id}'}
               alt="Изображение Вашего профиля"
               className="profile__img"
             />
@@ -71,7 +70,7 @@ function Main({ cards, onEditAvatar, onEditProfile, onAddPlace, onCardDelete, on
         <div id="content" className="elements__container">
           {cards.map((card) => (
             <Card 
-              key={card.id}
+              key={card.id || Math.random()}
               card={card}
               onCardLike={onCardLike} 
               onDelete={() => onCardDelete(card.id)}
