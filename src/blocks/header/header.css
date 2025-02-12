@@ -1,4 +1,21 @@
 .header{
+    display: flex;
+    justify-content: space-between;
     padding: 45px 0 ;
     border-bottom: 1px #545454 solid;
+}
+.header__auth-links{
+    margin-top: 10px;
+}
+.header__info{
+    margin-top: 15px;
+}
+
+.header__email, .header__logout{
+    color: #fff;
+    cursor: pointer;
+    transition: all .3s ease;
+}
+.header__email:hover{
+    color: #545454;
 }

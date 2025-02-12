@@ -19,6 +19,10 @@
         margin: 0;
         padding: 0;
     }
+    a, a:visited{
+        text-decoration: none;
+        color: #fff;
+    }
     .root{
         font-family: InterVariable;
         color: #fff;

@@ -3,7 +3,7 @@ import closeIcon from '../images/close-icon.svg';
 
 function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit }) {
   const handleSubmit = (e) => {
-    e.preventDefault(); // Предотвращаем перезагрузку страницы
+    e.preventDefault();
     onSubmit(e);
   };
   return (
@@ -18,7 +18,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose, onSubmit }) {
         </button>
         <h2 className="popup__title">{title}</h2>
         <form name={name} className="popup__form" noValidate onSubmit={handleSubmit}>
-          {children} {/* Здесь вставляется содержимое */}
+          {children}
           <button type="submit" className="popup__submit-button">Сохранить</button>
         </form>
       </div>

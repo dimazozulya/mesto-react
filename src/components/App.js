@@ -1,3 +1,4 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Main from './Main';
@@ -8,9 +9,16 @@ import CurrentUserContext from '../contexts/currentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import Login from './Login';
+import Registration from './Registration';
+
 
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+  const [userEmail, setUserEmail] = useState('');   
+
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -20,6 +28,26 @@ function App() {
   const [cards, setCards] = useState([]);
 
   const [currentUser, setCurrentUser] = useState(null);
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const savedEmail = localStorage.getItem('email');
+
+    if(token && savedEmail){
+      setIsLoggedIn(true);
+      setUserEmail(true);
+      getUserInfo().then(user => setCurrentUser(user));
+    }
+  },[]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+
+    setIsLoggedIn(false);
+    setUserEmail('');
+  }
 
   useEffect(() => {
     getUserInfo()
@@ -174,32 +202,53 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <BrowserRouter>
+         <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
       <div className="root">
-        {/* Компонент Header с передачей данных пользователя */}
-        {userInfo && (
-          <Header
-            onEditProfile={handleEditProfileClick}
-          />
-        )}
 
-        {/* Компонент Main с передачей карточек и обработчиков */}
-        <Main
-          cards={cards}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardDelete={handleCardDelete}
-          userInfo={userInfo}
-          avatar={avatar}
-          onEditProfile={handleEditProfileClick}
-          onCardLike={handleCardLike}
-        />
+          <Routes>
+              <Route 
+                path='/'
+                element={
+                  isLoggedIn ? (
+                    <>
+                    <Header
+                        onEditProfile={handleEditProfileClick}
+                        isLoggedIn={isLoggedIn}
+                        userEmail={userEmail}
+                        handleLogout={handleLogout}
+                    />
+                    <Main
+                        cards={cards}
+                        onAddPlace={handleAddPlaceClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onCardDelete={handleCardDelete}
+                        userInfo={userInfo}
+                        avatar={avatar}
+                        onEditProfile={handleEditProfileClick}
+                        onCardLike={handleCardLike}
+                   />
 
-        {/* Компонент Footer */}
-        <Footer />
+                    <Footer />
 
-        <EditProfilePopup 
+                    </>
+                  ) : (
+                    <Navigate to ='/sign-in' replace/>
+                  )
+                }
+              />
+
+              <Route path='/sign-up' element={<Registration />} />
+              <Route path='/sign-in' element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
+              <Route path="*" element={<Navigate to="/sign-in" replace />} />
+
+
+          </Routes>
+
+       {isLoggedIn && (
+          <>
+           <EditProfilePopup 
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onSubmit={handleUpdateUser}
@@ -217,10 +266,15 @@ function App() {
             onClose={closeAllPopups}
             onAddPlace={handleAddPlaceSubmit}
         />
+          </>
+       )}
        
       </div>
     </div>
     </CurrentUserContext.Provider>
+
+    </BrowserRouter>
+   
   );
 }
 

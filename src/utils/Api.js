@@ -137,27 +137,3 @@ export function changeLikeCardStatus(cardId, isLiked) {
   });
 }
 
-// export function changeLikeCardStatus(cardId, isLiked) {
-//   const method = isLiked? 'PUT' : 'DELETE';
-//   return fetch(`https://jsonplaceholder.typicode.com/posts/${cardId}`, {
-//     method: method,
-//     headers: {
-//       'Content-Type':'application/json',
-//     },
-//     body: JSON.stringify({liked: isLiked}),  
-//   })
-//     .then((res) => {
-//       if(res.ok){
-//         return res.json();
-//       }
-//       return Promise.reject(`Ошибка: ${res.status}`);
-//     })
-//     .then((data) => {
-//       console.log('Ответ сервера:', data);
-//       return data;
-//     })
-//     .catch((error) => {
-//       console.error (`Ошибка при выполнении запроса: `, error);
-//       throw error;
-//     });
-// }

@@ -34,7 +34,9 @@
 @import url(./blocks/elements/__container/__card/_remove/element__card_remove.css);
 @import url(./blocks/elements/__container/__card/__container/__title/_card/element__title_card.css);
 @import url(./blocks/elements/popup__element/popup__element.css);
-
+@import url(./blocks/auth/auth.css);
+@import url(./blocks/popup/__container/__icon.css);
+@import url(./blocks/popup/__container/__message.css);
 
 /* Ховер-эффект для кнопки удаления (мусорка) */
 .element__card_remove_styles:hover {
