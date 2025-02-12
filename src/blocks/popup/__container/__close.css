@@ -1,0 +1,14 @@
+.popup__close{
+    position: absolute;
+    all: unset;
+    max-width: 32px;
+    max-height: 32px;
+    top: -40px;
+    left: 100%;
+    cursor: pointer;
+    transition: 0.3s ease-out;
+}
+
+.popup__close-btn:hover{
+    opacity: .5;
+}
